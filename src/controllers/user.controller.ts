@@ -3,6 +3,31 @@ import { Request, Response } from "express";
 import User from "../models/user.model";
 import uploadImage from "../utils/uploadImage";
 
+
+export const getCurrentUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+       res.status(400).json({ success: false, message: "User ID is required" });
+       return;
+    }
+
+    const user = await User.findById(userId).select("-password").lean(); // Exclude password
+
+    if (!user) {
+       res.status(404).json({ success: false, message: "User not found" });
+       return;
+    }
+
+    res.status(200).json({ success: true, message: "User fetched successfully", user });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userName, name, email, password } = req.body;
