@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "./src/app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon"
+    "dev": "nodemon -r ts-node/register src/app.ts",
+     "build": "npm install && npx tsc",
+    "start": "node dist/app.js"
+   
   },
   "keywords": [],
   "author": "",
